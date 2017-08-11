@@ -3,9 +3,11 @@
     this.albumData = Fixtures.getAlbum();
   }
 
+
+
   angular
     .module('blocJams')
-    .controller('AlbumCtrl', ['Fixtures', AlbumCtrl);
+    .controller('AlbumCtrl', ['Fixtures', AlbumCtrl]);
 
 
 })();
