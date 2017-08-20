@@ -148,11 +148,16 @@
     if(currentSongIndex >= currentAlbum.length) {
       stopSong(SongPlayer.currentSong);
 
+      /* Could I write instead : 
+      if(currentSongIndex >= currentAlbum.length) {
+      currentBuzzObject.stop();
+      SongPlayer.currentSong.playing = null;
+      */
+    }
+
       //0;
     }else{
-
     var song = currentAlbum.songs[currentSongIndex];
-
       setSong(song);
       playSong(song);
     }

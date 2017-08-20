@@ -1,6 +1,10 @@
 (function() {
   function seekBar($document) {
-
+/**
+* @function calculatePercentd
+* @desc calulating the seek bar's value
+* @param {object} seekBar, {object} event
+*/
     var calculatePercent = function(seekBar, event) {
       var offsetX = event.pageX - seekBar.offset().left;
       var seekBarWidth = seekBar.width();
@@ -23,24 +27,49 @@
           scope.max = 100;
 
           var seekBar = $(element);
-
+/**
+* @function percentString
+* @desc Determines the podition of the thumb and width of the seek bar
+@param {object}
+*/
           var percentString = function() {
             var value = scope.value;
             var max = scope.max;
             var percent = value / max * 100;
             return percent + "%";
           };
-
+/**
+* @desc returns width of the seek bar fill element based on the calculated percent
+* @param {object}
+*/
           scope.fillStyle = function() {
             return {width: percentString()};
           };
 
+/**
+* @desc returns the the width of the user's positioning of the thumb
+* @param {object}
+*/
+          scope.thumbStyle = function() {
+            return {left: percentString()};
+          };
+
+          /**
+* @function onClickSeekBar
+* @desc Updates seek bar value based on the seek bar's width and location of the user's click on the seek bar
+* @param {object} event
+*/
           scope.onClickSeekBar = function(event) {
             var percent = calculatePercent(seekBar, event);
             scope.value = percent * scope.max;
 
           };
 
+/**
+* @function scope.trackThumb
+* @desc applys the change in value as the user drags the seek bar thumb
+* @param {object}
+*/
 
           scope.trackThumb = function() {
             $document.bind('mousemove.thumb', function(event) {
@@ -48,7 +77,7 @@
               scope.$apply(function() {
                 scope.value = percent * scope.max;
               });
-
+              
             });
 
             $document.bind('mouseup.thumb', function() {
