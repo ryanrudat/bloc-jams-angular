@@ -19,18 +19,33 @@
       templateUrl: '/templates/directives/seek_bar.html',
       replace: true,
       restrict: 'E',
-      scope: { },
+      scope: {
+        onChange: '&'
+      },
       link: function(scope, element, attributes) {
           // directive logic to return
 
           scope.value = 0;
           scope.max = 100;
 
-          var seekBar = $(element);
+    var seekBar = $(element);
+
+/**
+* @desc $observe's the value changes of both the length of currently playing song and current playback time of song
+* @param {method}
+*/
+    attributes.$observe('value', function(newValue){
+      scope.value = newValue;
+    });
+
+    attributes.$observe('max', function(newValue){
+      scope.max = newValue;
+    });
+
 /**
 * @function percentString
 * @desc Determines the podition of the thumb and width of the seek bar
-@param {object}
+* @param {object}
 */
           var percentString = function() {
             var value = scope.value;
@@ -59,11 +74,13 @@
 * @desc Updates seek bar value based on the seek bar's width and location of the user's click on the seek bar
 * @param {object} event
 */
-          scope.onClickSeekBar = function(event) {
-            var percent = calculatePercent(seekBar, event);
-            scope.value = percent * scope.max;
 
-          };
+    scope.onClickSeekBar = function(event) {
+      var percent = calculatePercent(seekBar, event);
+      scope.value = percent * scope.max;
+      notifyOnChange(scope.value);
+
+    };
 
 /**
 * @function scope.trackThumb
@@ -71,24 +88,37 @@
 * @param {object}
 */
 
-          scope.trackThumb = function() {
-            $document.bind('mousemove.thumb', function(event) {
-              var percent = calculatePercent(seekBar, event);
-              scope.$apply(function() {
-                scope.value = percent * scope.max;
-              });
-              
-            });
+    scope.trackThumb = function() {
+      $document.bind('mousemove.thumb', function(event) {
+        var percent = calculatePercent(seekBar, event);
+        scope.$apply(function() {
+            scope.value = percent * scope.max;
+            notifyOnChange(scope.value);
+      });
 
-            $document.bind('mouseup.thumb', function() {
-              $document.unbind('mousemove.thumb');
-              $document.unbind('mouseup.thumb');
-            });
-          };
+    });
+/**
+* @function notifyOnChange(newValue)
+* @desc notifies the
+* @param {object}
+*/
 
-      }
-    };
-  }
+
+      $document.bind('mouseup.thumb', function() {
+          $document.unbind('mousemove.thumb');
+          $document.unbind('mouseup.thumb');
+        });
+      };
+
+      var notifyOnChange = function(newValue) {
+        if(typeof scope.onChange === 'function') {
+          scope.onChange({value: newValue});
+        }
+      };
+
+    }
+  };
+}
 
   angular
     .module('blocJams')
