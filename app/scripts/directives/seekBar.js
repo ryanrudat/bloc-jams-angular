@@ -112,9 +112,9 @@
 
       var notifyOnChange = function(newValue) {
         if(typeof scope.onChange === 'function') {
-          scope.onChange({mite: newValue}); //value: newValue
+          scope.onChange({value: newValue); //value: newValue
         }
-console.log(notifyOnChange)
+console.log(scope.onChange)
       };
 
     }
