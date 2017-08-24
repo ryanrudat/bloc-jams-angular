@@ -24,8 +24,8 @@
              <h3 ng-show="artist-name">{{ artist.name }}</h3>      <!-- class= -->
              <div class="seek-control">
                  <seek-bar value="{{ playerBar.songPlayer.currentTime }}" max="{{ playerBar.songPlayer.currentSong.duration }}" on-change="playerBar.songPlayer.setCurrentTime(value)"></seek-bar>
-                 <div class="current-time">{{ playerBar.songPlayer.currentTime }}</div>
-                 <div ng-show="total-time">{{ playerBar.songPlayer.currentSong.duration }}</div>      <!-- class= -->
+                 <div class="current-time">{{ playerBar.songPlayer.currentTime | timecode }}</div> <!--| timecode-->
+                 <div ng-show="total-time">{{ playerBar.songPlayer.currentSong.duration | timecode }}</div>   <!--| timecode-->   <!-- class= -->
              </div>
          </div>
          <div class="control-group volume">
